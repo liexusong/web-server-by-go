@@ -44,4 +44,18 @@ Connection: Keep-Alive
 
 上面示例中，首部字段名为 `Connection`，字段值为 `Keep-Alive`。其作用是告诉Web服务器客户端需要保持长连接。
 
+#### 请求主体
+
+请求主体主要用于发送请求的数据，比如 POST 请求的参数、上传文件的内容等。可以通过 `Content-Type` 请求首部来指定请求主体的数据类型，比如可以通过下面的请求首部来指定请求主体的数据类型为 `JSON`：
+```text
+Content-Type: application/json
+```
+
+### HTTP响应
+
+HTTP 响应与 HTTP 请求相似，HTTP响应也由3个部分构成，分别是：
+
+* 状态行
+* 响应头
+* 响应正文
 
