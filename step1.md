@@ -165,5 +165,77 @@ Accept-Language: zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7
 ```
 上面的输出结果就是HTTP请求的数据，WEB服务器就是通过解析HTTP请求，然后根据不同的HTTP请求来进行相应的操作。
 
+## 一个简单WEB服务器
+
+最后，我们通过一个编写一个简单的WEB服务器来结束本章。这个WEB服务器只返回一条信息：“`This is simple WEB server`”。
+
+按照上面C/S架构的例子，我们先编写大概的服务端骨架：
+
+```go
+package main
+
+import (
+	"fmt"
+	"net"
+)
+
+func connResp(conn net.Conn) {
+}
+
+func main() {
+	// 监听8080端口
+	listen, err := net.Listen("tcp", "127.0.0.1:8080")
+	if err != nil {
+		fmt.Println("err = ", err)
+		return
+	}
+
+	defer listen.Close()
+
+    // 无限循环
+	for {
+		// 阻塞等待用户链接
+		conn, err := listen.Accept()
+		if err != nil {
+			fmt.Println("err = ", err)
+			return
+		}
+
+		buf := make([]byte, 1024)
+
+		n, err := conn.Read(buf) // 读取客户端请求数据
+		if err != nil {
+			fmt.Println("err = ", err)
+			return
+		}
+
+		fmt.Println("buf = ", string(buf[:n])) // 打印客户端请求
+
+		connResp(conn) // 返回数据给客户端连接
+	}
+}
+```
+在上面的代码中，我们首先通过调用 `net.Listen()` 方法来创建一个 `Listener` 对象来监听 `8080` 端口，然后在一个无限循环中调用 `Listener` 对象的 `Accept()` 方法来接收客户端连接，`Accept()` 方法返回一个 `Conn` 对象。接着通过调用 `Conn` 对象的 `Read()` 方法来读取客户端连接的HTTP请求，然后通过调用 `connResp()` 函数来返回数据给客户端请求。
+
+> 注意：为什么要在无限循环中接收客户端连接呢？因为如果不在无限循环中接收客户端连接，那么程序处理完一个请求后便会退出进程。
+
+注意到上面的 `connResp()` 函数还没有进行任何处理，所以我们需要继续编程返回数据的逻辑代码，如下：
+
+```go
+func connResp(conn net.Conn) {
+	httpResp := "HTTP/1.1 200 OK\r\n"       // 状态行
+	httpResp += "Connection: closed\r\n"    // 响应头
+	httpResp += "\r\n"                      // 空行
+	httpResp += "This is simple WEB server" // 响应正文
+
+	conn.Write([]byte(httpResp))
+
+	conn.Close()
+}
+```
+
+上面的代码构建了HTTP响应数据，然后通过调用 `Conn` 对象的 `Write()` 方法把响应数据发送给客户端。我们编译并运行上面的程序，然后通过浏览器访问 `http://127.0.0.1:8080`，服务器就会返回 “`This is simple WEB server`” 消息给浏览器。
+
+当然，现在这个服务器并没有什么作用，因为并不能根据我们的HTTP请求来进行不同的处理，但我们可以通过这个程序来了解到浏览器和WEB服务器之间是怎么通讯的，接下来的章节主要在这个程序的基础上不断完善，从而实现一个完整的WEB服务器。
 
 
