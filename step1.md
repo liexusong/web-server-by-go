@@ -108,3 +108,41 @@ Content-Length: 112
 
 TCP服务器首先调用 `net` 包的 `Listen()` 函数创建一个监听端口的 `Listener` 对象，然后通过调用 `Listener` 对象的 `Accept()` 方法来接收客户端连接。`Accept()` 方法会返回一个 `Conn` 对象（客户端连接），然后就可以通过调用 `Conn` 对象的 `Read() / Write()` 方法来对客户端连接进行读写操作。
 
+下面通过一个例子来介绍怎么使用 `net` 包来编写一个TCP服务端程序：
+```go
+package main
+
+import (
+	"fmt"
+	"net"
+)
+
+func main() {
+	// 监听8080端口
+	listen, err := net.Listen("tcp", "127.0.0.1:8080")
+	if err != nil {
+		fmt.Println("err = ", err)
+		return
+	}
+
+	defer listen.Close()
+
+	// 阻塞等待用户链接
+	conn, err := listen.Accept()
+	if err != nil {
+		fmt.Println("err = ", err)
+		return
+	}
+
+	buf := make([]byte, 1024)
+
+	n, err := conn.Read(buf) // 读取客户端请求数据
+	if err != nil {
+		fmt.Println("err = ", err)
+		return
+	}
+
+	fmt.Println("buf = ", string(buf[:n])) // 打印客户端请求
+	defer conn.Close()
+}
+```
