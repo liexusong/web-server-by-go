@@ -163,7 +163,7 @@ Sec-Fetch-Mode: navigate
 Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7
 ```
-上面的输出结果就是HTTP请求的数据，WEB服务器就是解析HTTP请求，然后根据HTTP请求来进行不同的操作。
+上面的输出结果就是HTTP请求的数据，WEB服务器就是通过解析HTTP请求，然后根据不同的HTTP请求来进行相应的操作。
 
 
 
