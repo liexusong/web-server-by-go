@@ -81,4 +81,20 @@ HTTP 响应与 HTTP 请求相似，HTTP响应也由3个部分构成，分别是�
 * `500 Internal Server Error` 服务器发生不可预期的错误，导致无法完成客户端的请求。
 * `503 Service Unavailable` 服务器当前不能够处理客户端的请求，在一段时间之后，服务器可能会恢复正常。
 
+下面是一个HTTP响应的例子：
+
+```text
+HTTP/1.1 200 OK
+Server: Apache Tomcat/5.0.12
+Date: Mon,6Oct2003 13:23:42 GMT
+Content-Length: 112
+
+<html>
+...
+</html>
+```
+
+
+
+
 
