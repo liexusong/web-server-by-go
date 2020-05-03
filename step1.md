@@ -147,7 +147,7 @@ func main() {
 }
 ```
 
-我们把上面例子的程序编译后运行，然后再通过浏览器来访问 `http://127.0.0.1:8080` 后，服务器会打印以下结果：
+我们把上面程序编译后运行，然后通过浏览器访问 `http://127.0.0.1:8080` ，服务器会打印以下结果：
 
 ```text
 buf =  GET / HTTP/1.1
@@ -163,5 +163,5 @@ Sec-Fetch-Mode: navigate
 Accept-Encoding: gzip, deflate, br
 Accept-Language: zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7
 ```
-
+上面结果就是HTTP请求的数据。
 
